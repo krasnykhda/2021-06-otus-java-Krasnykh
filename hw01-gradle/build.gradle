@@ -13,7 +13,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveBaseName.set('gradleHelloWorld')
+    archiveBaseName.set('gradleHelloOtus')
     archiveVersion.set('0.1')
     archiveClassifier.set('')
     manifest {
