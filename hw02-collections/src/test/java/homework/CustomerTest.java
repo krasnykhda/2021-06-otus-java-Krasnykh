@@ -52,17 +52,14 @@ class CustomerTest {
 
 
         Map.Entry<Customer, String> middleScore = customerService.getNext(new Customer(10, "Key", 20));
-        //Следующий scores после 20 - 233, поэтому вернется пара Customer 1 - "Data1"
 
         assertThat(middleScore.getKey()).isEqualTo(customer1);
-        middleScore.getKey().setScores(10000);//Тут у customer1 установили scores в 10000 и поменяли имя
+        middleScore.getKey().setScores(10000);
         middleScore.getKey().setName("Vasy");
 
-         Map.Entry<Customer, String> biggestScore = customerService.getNext(customer1);
-        //Тут взвращается null, т.к 10000 теперь максимальное значение в коллекции - следующего элемента нет
+        Map.Entry<Customer, String> biggestScore = customerService.getNext(customer1);
 
         assertThat(biggestScore.getKey()).isEqualTo(customer3);
-        //null сравнивается с customer3 - тест не проходит. Правильно ли такое сравнение?
 
         Map.Entry<Customer, String> notExists = customerService.getNext(new Customer(100, "Not exists", 20000));
 
@@ -83,12 +80,10 @@ class CustomerTest {
         customerService.add(customer3, "Data3");
 
         Map.Entry<Customer, String> smallestScore = customerService.getSmallest();
-        //тут вернулсь пара с полями ключа как в Customer2, но это не Customer2.
+
         smallestScore.getKey().setName("Vasyl");
-        //У ключа данной пары поменяли имя
 
         assertThat(customerService.getSmallest().getKey().getName()).isEqualTo(customer2.getName());
-        //тест хочет чтобы Vasyl был равен  Petr, но разве это возможно?
     }
 
     @Test

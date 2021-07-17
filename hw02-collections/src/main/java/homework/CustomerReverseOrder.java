@@ -7,13 +7,11 @@ import java.util.Deque;
 import java.util.TreeMap;
 
 public class CustomerReverseOrder {
-    Deque<Customer> stack;
-
+    private final Deque<Customer> stack;
 
     public CustomerReverseOrder() {
         this.stack = new ArrayDeque<>();
     }
-
 
     public void add(Customer customer) {
         stack.push(customer);
