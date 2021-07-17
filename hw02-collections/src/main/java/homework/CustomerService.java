@@ -18,14 +18,12 @@ public class CustomerService {
     }
     public Map.Entry<Customer, String> getSmallest() {
         Map.Entry<Customer, String> entry = treeMap.firstEntry();
-        NavigableMap<Customer, String> treeMapCopy = copyTreeMap(entry);
-        return treeMapCopy.firstEntry();
+        return copyTreeMap(entry).firstEntry();
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {
         Map.Entry<Customer, String> entry = treeMap.higherEntry(customer);
-        NavigableMap<Customer, String> treeMapCopy = copyTreeMap(entry);
-        return treeMapCopy.firstEntry();
+        return copyTreeMap(entry).firstEntry();
     }
 
     public void add(Customer customer, String data) {
