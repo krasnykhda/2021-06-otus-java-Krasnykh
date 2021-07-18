@@ -9,21 +9,15 @@ import java.util.TreeMap;
 
 public class CustomerService {
     private final NavigableMap<Customer, String> treeMap = new TreeMap<>((o1, o2) -> (int) (o1.getScores() - o2.getScores()));
-    public NavigableMap<Customer, String> copyTreeMap(Map.Entry<Customer, String> entry){
-        NavigableMap<Customer, String> treeMapCopy = new TreeMap<>((o1, o2) -> (int) (o1.getScores() - o2.getScores()));
-        if(entry!=null){
-            treeMapCopy.put(new Customer(entry.getKey().getId(), entry.getKey().getName(), entry.getKey().getScores()), entry.getValue());
-        }
-        return treeMapCopy;
-    }
+
     public Map.Entry<Customer, String> getSmallest() {
         Map.Entry<Customer, String> entry = treeMap.firstEntry();
-        return copyTreeMap(entry).firstEntry();
+        return entry == null ? null:new AbstractMap.SimpleImmutableEntry<>(new Customer(entry.getKey()), entry.getValue());
     }
 
     public Map.Entry<Customer, String> getNext(Customer customer) {
         Map.Entry<Customer, String> entry = treeMap.higherEntry(customer);
-        return copyTreeMap(entry).firstEntry();
+        return entry == null ? null:new AbstractMap.SimpleImmutableEntry<>(new Customer(entry.getKey()), entry.getValue());
     }
 
     public void add(Customer customer, String data) {
