@@ -3,7 +3,7 @@ package homework;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
+import java.util.*;
 
 class Ioc {
 
@@ -18,15 +18,19 @@ class Ioc {
 
     static class DemoInvocationHandler implements InvocationHandler {
         private final TestLoggerInterface myClass;
-
+        Set<Method> methodsWithLog=new HashSet<>();
         DemoInvocationHandler(TestLoggerInterface myClass) {
             this.myClass = myClass;
+            for(var m: TestLoggerInterface.class.getDeclaredMethods()){
+                if(m.isAnnotationPresent(Log.class)){
+                    methodsWithLog.add(m);
+                }
+            }
         }
-
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if(method.isAnnotationPresent(Log.class)){
-                System.out.println("executed method: " + method.getName()+" param:"+ Arrays.toString(args));
+            if (methodsWithLog.contains(method)){
+               System.out.println("executed method: " + method.getName()+" param:"+ Arrays.toString(args));
             }
             return method.invoke(myClass, args);
         }
