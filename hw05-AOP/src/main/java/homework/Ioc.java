@@ -21,9 +21,9 @@ class Ioc {
         Set<Method> methodsWithLog=new HashSet<>();
         DemoInvocationHandler(TestLoggerInterface myClass) {
             this.myClass = myClass;
-            for(var m: TestLoggerInterface.class.getDeclaredMethods()){
-                if(m.isAnnotationPresent(Log.class)){
-                    methodsWithLog.add(m);
+            for(var method: TestLoggerInterface.class.getDeclaredMethods()){
+                if(method.isAnnotationPresent(Log.class)){
+                    methodsWithLog.add(method);
                 }
             }
         }
