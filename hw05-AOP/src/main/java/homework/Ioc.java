@@ -3,6 +3,7 @@ package homework;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.*;
 import java.util.*;
 
 class Ioc {
@@ -21,20 +22,23 @@ class Ioc {
         Set<Method> methodsWithLog=new HashSet<>();
         DemoInvocationHandler(TestLoggerInterface myClass) {
             this.myClass = myClass;
-            for(var method: TestLoggerInterface.class.getDeclaredMethods()){
+            for(var method: myClass.getClass().getDeclaredMethods()){
                 if(method.isAnnotationPresent(Log.class)){
-                    methodsWithLog.add(method);
+                    try {
+                        methodsWithLog.add(TestLoggerInterface.class.getDeclaredMethod(method.getName(),method.getParameterTypes()));
+                    }catch (NoSuchMethodException exception){
+                        System.err.println(exception.getMessage());
+                    }
                 }
             }
         }
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            if (methodsWithLog.contains(method)){
-               System.out.println("executed method: " + method.getName()+" param:"+ Arrays.toString(args));
+            if(methodsWithLog.contains(method)){
+                System.out.println("executed method: " + method.getName()+" param:"+ Arrays.toString(args));
             }
             return method.invoke(myClass, args);
         }
-
         @Override
         public String toString() {
             return "DemoInvocationHandler{" +
