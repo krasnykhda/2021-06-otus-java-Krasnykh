@@ -25,23 +25,21 @@ public class Controller {
         while(itr.hasNext()&&value>0) {
             Map.Entry<Integer, CashBox> entry = itr.next();
             Integer nominal = entry.getKey();
-            int valueOfBanknotes=value/nominal;
+            int numberOfBanknotes=value/nominal;
             CashBox cell = entry.getValue();
             Integer cellBalance= cell.getBalance();
+            int amountDebited;
             if(cellBalance>0){
-                if(valueOfBanknotes>=cellBalance){
-                    if(!checkingThePossibility) {
-                        cell.getBanknotes(cellBalance);
-                        this.atmBalance -= cellBalance * nominal;
-                    }
-                    value-=cellBalance*nominal;
+                if(numberOfBanknotes>=cellBalance){
+                    amountDebited=cellBalance;
                 }else {
-                    if(!checkingThePossibility) {
-                        cell.getBanknotes(valueOfBanknotes);
-                        this.atmBalance -= valueOfBanknotes * nominal;
-                    }
-                    value-=valueOfBanknotes*nominal;
+                    amountDebited=numberOfBanknotes;
                 }
+                if(!checkingThePossibility) {
+                    cell.getBanknotes(amountDebited);
+                    this.atmBalance -= amountDebited * nominal;
+                }
+                value-=amountDebited*nominal;
             }
         }
         if(checkingThePossibility&&value>0){
