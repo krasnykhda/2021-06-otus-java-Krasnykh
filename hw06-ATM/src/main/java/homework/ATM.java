@@ -17,5 +17,11 @@ public class ATM {
     public void getMoney(int value){
         controller.giveMoney(value,cashBoxes);
     }
+    public int getAtmBalance(){
+       return controller.getAtmBalance();
+    }
+    public int getCellBalance(Integer nominal){
+        return cashBoxes.get(nominal).getBalance();
+    }
 
 }

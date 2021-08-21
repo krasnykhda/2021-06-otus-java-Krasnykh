@@ -11,7 +11,12 @@ public class Controller {
             executeOperation(value,cashBoxes,false);
         }
     }
-    private boolean executeOperation(int value,Map<Integer,CashBox> cashBoxes,boolean checkingThePossibility) {
+
+    public int getAtmBalance() {
+        return atmBalance;
+    }
+
+    private boolean executeOperation(int value, Map<Integer,CashBox> cashBoxes, boolean checkingThePossibility) {
         if(checkingThePossibility && value>atmBalance){
             System.out.println("В банкомате недостаточно средств");
             return false;
