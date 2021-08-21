@@ -39,4 +39,14 @@ public class ATMTest {
         atm.getMoney(125500);
         Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(9);
     }
+    @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 500")
+    @Test
+    void test4(){
+        atm.addMoney(5000,30);
+        atm.addMoney(2000,10);
+        atm.addMoney(500,10);
+        atm.getMoney(195500);
+        Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(10);
+    }
+
 }
