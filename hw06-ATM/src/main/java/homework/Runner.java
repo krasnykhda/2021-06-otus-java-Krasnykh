@@ -2,11 +2,11 @@ package homework;
 
 public class Runner {
     public static void main(String[] args) {
-        Integer[]cellsNominals={1000,2000,5000,500};
-        ATM atm=new ATM(cellsNominals);
-        atm.addMoney(5000,30);
-        atm.addMoney(2000,10);
-        atm.addMoney(500,10);
-        atm.getMoney(125500);
+        Nominals[] cellsNom = {Nominals.ТЫСЯЧА, Nominals.ДВЕ_ТЫСЯЧИ, Nominals.ПЯТЬ_ТЫСЯЧ, Nominals.ПЯТЬСОТ};
+        Atm atm = new Atm(cellsNom);
+        atm.addMoney(Nominals.ПЯТЬ_ТЫСЯЧ, 30);
+        atm.addMoney(Nominals.ДВЕ_ТЫСЯЧИ, 10);
+        atm.addMoney(Nominals.ПЯТЬСОТ, 10);
+        atm.getMoney(125000);
     }
 }
