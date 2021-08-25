@@ -12,16 +12,16 @@ public class ATMTest {
 
     @BeforeEach
     void setUp() {
-        Nominals[] cellsNominals = {Nominals.ТЫСЯЧА, Nominals.ДВЕ_ТЫСЯЧИ, Nominals.ПЯТЬ_ТЫСЯЧ, Nominals.ПЯТЬСОТ};
+        Nominals[] cellsNominals = {Nominals.THOUSAND, Nominals.TWO_THOUSAND, Nominals.FIVE_THOUSAND, Nominals.FIVE_HUNDRED};
         atm = new Atm(cellsNominals);
     }
 
     @Test
     @DisplayName("Должен вернуть правильное значение баланса банкомата")
     void test1() {
-        atm.addMoney(Nominals.ПЯТЬ_ТЫСЯЧ, 30);
-        atm.addMoney(Nominals.ДВЕ_ТЫСЯЧИ, 10);
-        atm.addMoney(Nominals.ПЯТЬСОТ, 10);
+        atm.addMoney(Nominals.FIVE_THOUSAND, 30);
+        atm.addMoney(Nominals.TWO_THOUSAND, 10);
+        atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(125500);
         Assertions.assertThat(atm.getAtmBalance()).isEqualTo(49500);
     }
@@ -29,9 +29,9 @@ public class ATMTest {
     @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 5000")
     @Test
     void test2() {
-        atm.addMoney(Nominals.ПЯТЬ_ТЫСЯЧ, 30);
-        atm.addMoney(Nominals.ДВЕ_ТЫСЯЧИ, 10);
-        atm.addMoney(Nominals.ПЯТЬСОТ, 10);
+        atm.addMoney(Nominals.FIVE_THOUSAND, 30);
+        atm.addMoney(Nominals.TWO_THOUSAND, 10);
+        atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(125500);
         Assertions.assertThat(atm.getCellBalance(5000)).isEqualTo(5);
     }
@@ -39,9 +39,9 @@ public class ATMTest {
     @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 500")
     @Test
     void test3() {
-        atm.addMoney(Nominals.ПЯТЬ_ТЫСЯЧ, 30);
-        atm.addMoney(Nominals.ДВЕ_ТЫСЯЧИ, 10);
-        atm.addMoney(Nominals.ПЯТЬСОТ, 10);
+        atm.addMoney(Nominals.FIVE_THOUSAND, 30);
+        atm.addMoney(Nominals.TWO_THOUSAND, 10);
+        atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(125500);
         Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(9);
     }
@@ -49,9 +49,9 @@ public class ATMTest {
     @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 500")
     @Test
     void test4() {
-        atm.addMoney(Nominals.ПЯТЬ_ТЫСЯЧ, 30);
-        atm.addMoney(Nominals.ДВЕ_ТЫСЯЧИ, 10);
-        atm.addMoney(Nominals.ПЯТЬСОТ, 10);
+        atm.addMoney(Nominals.FIVE_THOUSAND, 30);
+        atm.addMoney(Nominals.TWO_THOUSAND, 10);
+        atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(195500);
         Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(10);
     }

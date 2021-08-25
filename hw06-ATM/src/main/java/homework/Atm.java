@@ -8,14 +8,14 @@ public class Atm {
 
     public Atm(Nominals[] cellsNominals) {
         for (var nominal : cellsNominals) {
-            Integer numberNominal = CashBox.getNumberNominal(nominal);
+            Integer numberNominal = nominal.getNumberNominal();
             cashBoxes.put(numberNominal, new CashBox(numberNominal));
         }
     }
 
     public void addMoney(Nominals nominal, int value) {
         try {
-            atmController.addMoney(CashBox.getNumberNominal(nominal), value, cashBoxes);
+            atmController.addMoney(nominal.getNumberNominal(), value, cashBoxes);
         } catch (CellsNotFoundException exception) {
             System.err.println(exception.getMessage());
         }
