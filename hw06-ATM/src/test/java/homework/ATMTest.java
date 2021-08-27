@@ -53,6 +53,7 @@ public class ATMTest {
         atm.addMoney(Nominals.TWO_THOUSAND, 10);
         atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(195500);
+        Assertions.assertThat(atm.getCellBalance(Nominals.FIVE_HUNDRED)).isEqualTo(10);
     }
 
 }
