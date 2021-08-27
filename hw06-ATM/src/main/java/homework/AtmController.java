@@ -3,59 +3,61 @@ package homework;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class AtmController {
     private int atmBalance;
 
-    public void giveMoney(int value, Map<Integer, CashBox> cashBoxes) {
-        try {
-            executeOperation(value, cashBoxes, true);
-            executeOperation(value, cashBoxes, false);
-        } catch (MoneyNotFoundException exception) {
-            System.err.println(exception.getMessage());
-        }
+    public void giveMoney(int value, Map<Nominals, CashBox> cashBoxes) {
+        Map<Nominals, Integer> numberOfDebitedBanknoted = getNumberOfDebitedBanknoted(value, cashBoxes);
+        executeOperation(cashBoxes, numberOfDebitedBanknoted);
     }
 
     public int getAtmBalance() {
         return atmBalance;
     }
 
-    private void executeOperation(int value, Map<Integer, CashBox> cashBoxes, boolean checkingThePossibility) throws MoneyNotFoundException {
-        if (checkingThePossibility && value > atmBalance) {
+    private Map<Nominals, Integer> getNumberOfDebitedBanknoted(int value, Map<Nominals, CashBox> cashBoxes) {
+        if (value > atmBalance) {
             throw new MoneyNotFoundException("В банкомате недостаточно средств");
         }
-        Iterator<Map.Entry<Integer, CashBox>> itr = cashBoxes.entrySet().iterator();
+        Map<Nominals, Integer> numberOfDebitedBanknoted = new TreeMap<>();
+        Iterator<Map.Entry<Nominals, CashBox>> itr = cashBoxes.entrySet().iterator();
         while (itr.hasNext() && value > 0) {
-            Map.Entry<Integer, CashBox> entry = itr.next();
-            Integer nominal = entry.getKey();
-            int numberOfBanknotes = value / nominal;
+            Map.Entry<Nominals, CashBox> entry = itr.next();
+            Nominals nominal = entry.getKey();
+            int numberOfBanknotes = value / nominal.getNumberNominal();
             CashBox cell = entry.getValue();
             Integer cellBalance = cell.getBalance();
-            int amountDebited;
-            if (cellBalance > 0) {
-                if (numberOfBanknotes >= cellBalance) {
-                    amountDebited = cellBalance;
-                } else {
-                    amountDebited = numberOfBanknotes;
-                }
-                if (!checkingThePossibility) {
-                    cell.getBanknotes(amountDebited);
-                    this.atmBalance -= amountDebited * nominal;
-                }
-                value -= amountDebited * nominal;
+            if (cellBalance > 0 && numberOfBanknotes > 0) {
+                int amountDebited = (numberOfBanknotes >= cellBalance) ? cellBalance : numberOfBanknotes;
+                numberOfDebitedBanknoted.put(nominal, amountDebited);
+                value -= amountDebited * nominal.getNumberNominal();
             }
         }
-        if (checkingThePossibility && value > 0) {
+        if (value > 0) {
             throw new MoneyNotFoundException("Нет возможноти набрать указанную сумму!");
+        }
+        return numberOfDebitedBanknoted;
+    }
+
+    private void executeOperation(Map<Nominals, CashBox> cashBoxes, Map<Nominals, Integer> numberOfDebitedBanknoted) {
+        Iterator<Map.Entry<Nominals, Integer>> itr = numberOfDebitedBanknoted.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry<Nominals, Integer> entry = itr.next();
+            Nominals nominal = entry.getKey();
+            CashBox cell = cashBoxes.get(nominal);
+            cell.getBanknotes(entry.getValue());
+            this.atmBalance -= entry.getValue() * nominal.getNumberNominal();
         }
     }
 
-    public void addMoney(Integer nominal, int value, Map<Integer, CashBox> cashBoxes) throws CellsNotFoundException {
+    public void addMoney(Nominals nominal, int value, Map<Nominals, CashBox> cashBoxes) throws CellsNotFoundException {
         CashBox cell = cashBoxes.get(nominal);
         if (cell == null) {
             throw new CellsNotFoundException("В банкомате нет ячейки для данного номинала " + nominal.toString());
         }
-        this.atmBalance += nominal * value;
+        this.atmBalance += nominal.getNumberNominal() * value;
         cell.addBanknotes(value);
     }
 }

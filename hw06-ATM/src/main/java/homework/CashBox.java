@@ -3,15 +3,15 @@ package homework;
 import java.util.Objects;
 
 public class CashBox {
-    private final Integer numberNominal;
+    private final Nominals nominal;
     private int balance;
 
-    public CashBox(int numberNominal) {
-        this.numberNominal = numberNominal;
+    public CashBox(Nominals nominal) {
+        this.nominal = nominal;
     }
 
-    public Integer getNominal() {
-        return numberNominal;
+    public Nominals getNominal() {
+        return nominal;
     }
 
     public void addBanknotes(int addValue) {

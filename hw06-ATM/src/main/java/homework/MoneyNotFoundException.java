@@ -1,6 +1,6 @@
 package homework;
 
-public class MoneyNotFoundException extends Exception {
+public class MoneyNotFoundException extends RuntimeException {
     public MoneyNotFoundException(String message) {
         super(message);
     }

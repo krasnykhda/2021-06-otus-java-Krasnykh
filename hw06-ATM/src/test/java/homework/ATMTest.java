@@ -33,7 +33,7 @@ public class ATMTest {
         atm.addMoney(Nominals.TWO_THOUSAND, 10);
         atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(125500);
-        Assertions.assertThat(atm.getCellBalance(5000)).isEqualTo(5);
+        Assertions.assertThat(atm.getCellBalance(Nominals.FIVE_THOUSAND)).isEqualTo(5);
     }
 
     @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 500")
@@ -43,7 +43,7 @@ public class ATMTest {
         atm.addMoney(Nominals.TWO_THOUSAND, 10);
         atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(125500);
-        Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(9);
+        Assertions.assertThat(atm.getCellBalance(Nominals.FIVE_HUNDRED)).isEqualTo(9);
     }
 
     @DisplayName("Должен вернуть правильное значение баланса ячейки с номиналом 500")
@@ -53,7 +53,6 @@ public class ATMTest {
         atm.addMoney(Nominals.TWO_THOUSAND, 10);
         atm.addMoney(Nominals.FIVE_HUNDRED, 10);
         atm.getMoney(195500);
-        Assertions.assertThat(atm.getCellBalance(500)).isEqualTo(10);
     }
 
 }

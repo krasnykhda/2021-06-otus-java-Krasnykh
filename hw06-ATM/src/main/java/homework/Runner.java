@@ -7,6 +7,7 @@ public class Runner {
         atm.addMoney(Nominals.FIVE_THOUSAND, 30);
         atm.addMoney(Nominals.TWO_THOUSAND, 10);
         atm.addMoney(Nominals.FIVE_HUNDRED, 10);
-        atm.getMoney(125000);
+        atm.getMoney(127100);
+        System.out.println(atm.getAtmBalance());
     }
 }
