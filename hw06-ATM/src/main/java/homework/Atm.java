@@ -1,6 +1,7 @@
 package homework;
 
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Atm {
     private final Map<Nominals, CashBox> cashBoxes = new TreeMap<>((o1, o2) -> o2.getNumberNominal() - o1.getNumberNominal());

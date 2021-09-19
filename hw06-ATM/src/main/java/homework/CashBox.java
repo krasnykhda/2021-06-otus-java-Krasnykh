@@ -1,7 +1,5 @@
 package homework;
 
-import java.util.Objects;
-
 public class CashBox {
     private final Nominals nominal;
     private int balance;
