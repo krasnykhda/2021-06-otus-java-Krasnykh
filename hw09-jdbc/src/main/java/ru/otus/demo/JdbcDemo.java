@@ -21,17 +21,18 @@ public class JdbcDemo {
         var demo = new JdbcDemo();
         try (var connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
             connection.setAutoCommit(false);
-            var id = 1;
+            var id = 123123;
             demo.insertRecord(connection, id);
             demo.selectRecord(connection, id);
         }
     }
 
     private void insertRecord(Connection connection, int id) throws SQLException {
-        try (var pst = connection.prepareStatement("insert into test(id, name) values (?, ?)")) {
+        try (var pst = connection.prepareStatement("insert into client(id, name,author) values (?, ?, ?)")) {
             var savePoint = connection.setSavepoint("savePointName");
             pst.setInt(1, id);
             pst.setString(2, "NameValue");
+            pst.setString(3, "ваываыва");
             try {
                 var rowCount = pst.executeUpdate(); //Блокирующий вызов
                 connection.commit();
@@ -44,7 +45,7 @@ public class JdbcDemo {
     }
 
     private void selectRecord(Connection connection, int id) throws SQLException {
-        try (var pst = connection.prepareStatement("select name from test where id  = ?")) {
+        try (var pst = connection.prepareStatement("select name client test where id  = ?")) {
             pst.setInt(1, id);
              try (var rs = pst.executeQuery()) {
                 if (rs.next()) {

@@ -1,8 +1,11 @@
 package ru.otus.crm.model;
 
+import ru.otus.jdbc.mapper.Guid;
 public class Client {
+    @Guid
     private Long id;
     private String name;
+
 
     public Client() {
     }
@@ -15,6 +18,10 @@ public class Client {
     public Client(Long id, String name) {
         this.id = id;
         this.name = name;
+    }
+    public Client(Object id, Object name) {
+        this.id = (Long)id;
+        this.name = (String) name;
     }
 
     public Long getId() {

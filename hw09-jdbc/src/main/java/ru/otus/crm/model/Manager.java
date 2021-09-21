@@ -1,6 +1,9 @@
 package ru.otus.crm.model;
 
+import ru.otus.jdbc.mapper.Guid;
+
 public class Manager {
+    @Guid
     private Long no;
     private String label;
     private String param1;
@@ -12,10 +15,21 @@ public class Manager {
         this.label = label;
     }
 
+    public Manager(String label, String param1) {
+        this.label = label;
+        this.param1 = param1;
+    }
+
     public Manager(Long no, String label, String param1) {
         this.no = no;
         this.label = label;
         this.param1 = param1;
+    }
+
+    public Manager(Object no, Object label, Object param1) {
+        this.no = (Long) no;
+        this.label = (String) label;
+        this.param1 = (String) param1;
     }
 
     public Long getNo() {

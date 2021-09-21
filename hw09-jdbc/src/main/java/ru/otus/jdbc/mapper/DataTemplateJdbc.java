@@ -1,9 +1,16 @@
 package ru.otus.jdbc.mapper;
 
 import ru.otus.core.repository.DataTemplate;
+import ru.otus.core.repository.DataTemplateException;
 import ru.otus.core.repository.executor.DbExecutor;
+import ru.otus.crm.model.Client;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,21 +29,88 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
 
     @Override
     public Optional<T> findById(Connection connection, long id) {
-        throw new UnsupportedOperationException();
+        return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectByIdSql(), List.of(id), rs -> {
+            try {
+                if (rs.next()) {
+                    int fieldsCount = entitySQLMetaData.getMetaData().getAllFields().size();
+                    Object[] params = new Object[fieldsCount];
+                    for (int i = 0; i < fieldsCount; i++) {
+                        params[i] = rs.getObject(i + 1);
+                    }
+                    return (T) entitySQLMetaData.getMetaData().getConstructor().newInstance(params);
+                }
+            } catch (SQLException e) {
+                throw new DataTemplateException(e);
+            } catch (InstantiationException e) {
+                throw new DataTemplateException(e);
+            } catch (IllegalAccessException e) {
+                throw new DataTemplateException(e);
+            } catch (InvocationTargetException e) {
+                throw new DataTemplateException(e);
+            }
+            return null;
+        });
     }
 
     @Override
     public List<T> findAll(Connection connection) {
-        throw new UnsupportedOperationException();
+        return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectAllSql(), Collections.emptyList(), rs -> {
+            var clientList = new ArrayList<T>();
+            try {
+                while (rs.next()) {
+                    int fieldsCount = entitySQLMetaData.getMetaData().getAllFields().size();
+                    Object[] params = new Object[fieldsCount];
+                    for (int i = 0; i < fieldsCount; i++) {
+                        params[i] = rs.getObject(i + 1);
+                    }
+                    clientList.add((T) entitySQLMetaData.getMetaData().getConstructor().newInstance(params));
+                }
+                return clientList;
+            } catch (SQLException e) {
+                throw new DataTemplateException(e);
+            } catch (InstantiationException e) {
+                throw new DataTemplateException(e);
+            } catch (IllegalAccessException e) {
+                throw new DataTemplateException(e);
+            } catch (InvocationTargetException e) {
+                throw new DataTemplateException(e);
+            }
+
+        }).orElseThrow(() -> new RuntimeException("Unexpected error"));
     }
 
     @Override
     public long insert(Connection connection, T client) {
-        throw new UnsupportedOperationException();
+        try {
+            List<Object> params = new ArrayList();
+            List<Field> fields = entitySQLMetaData.getMetaData().getFieldsWithoutId();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                params.add(field.get(client));
+            }
+            return dbExecutor.executeStatement(connection, entitySQLMetaData.getInsertSql(),
+                    params);
+        } catch (Exception e) {
+            throw new DataTemplateException(e);
+        }
     }
 
     @Override
     public void update(Connection connection, T client) {
-        throw new UnsupportedOperationException();
+        try {
+            List<Object> params = new ArrayList();
+            List<Field> fields = entitySQLMetaData.getMetaData().getFieldsWithoutId();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                params.add(field.get(client));
+            }
+            Field idField = entitySQLMetaData.getMetaData().getIdField();
+            idField.setAccessible(true);
+            params.add(idField.get(client));
+            dbExecutor.executeStatement(connection, entitySQLMetaData.getUpdateSql(),
+                    params);
+        } catch (Exception e) {
+            throw new DataTemplateException(e);
+        }
     }
 }
