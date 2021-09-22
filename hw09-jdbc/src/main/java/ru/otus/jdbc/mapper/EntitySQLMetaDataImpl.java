@@ -23,46 +23,51 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
 
     @Override
     public String getSelectByIdSql() {
-        return "Select * from " + metaData.getName() + " where " + metaData.getIdField().getName() + "=?";
+        return new StringBuilder("Select * from ").append(metaData.getName())
+                .append(" where ")
+                .append(metaData.getIdField().getName())
+                .append("=?").toString();
     }
 
     @Override
     public String getInsertSql() {
-        String queryBegin = "insert into " + metaData.getName() + "(";
-        String queryEnd = "values(";
+        StringBuilder queryBegin = new StringBuilder();
+        StringBuilder queryEnd = new StringBuilder("values(");
+        queryBegin.append("insert into ").append(metaData.getName()).append("(");
         int count = 1;
         List<Field> fields = metaData.getFieldsWithoutId();
         for (Field field : fields) {
-            queryBegin = queryBegin + field.getName();
-            queryEnd = queryEnd + "?";
+            queryBegin.append(field.getName());
+            queryEnd.append("?");
             if (count < fields.size()) {
-                queryBegin = queryBegin + ",";
-                queryEnd = queryEnd + ",";
+                queryBegin.append(",");
+                queryEnd.append(",");
             } else {
-                queryBegin = queryBegin + ")";
-                queryEnd = queryEnd + ")";
+                queryBegin.append(")");
+                queryEnd.append(")");
             }
             count++;
         }
-        return queryBegin + queryEnd;
+        return queryBegin.append(queryEnd).toString();
 
     }
 
     @Override
     public String getUpdateSql() {
-        String queryBegin = "update " + metaData.getName() + " set ";
-        String queryEnd = "where ";
+        StringBuilder queryBegin = new StringBuilder("update ");
+        StringBuilder queryEnd = new StringBuilder("where ");
+        queryBegin.append(metaData.getName()).append(" set ") ;
         int count = 1;
         List<Field> fields = metaData.getFieldsWithoutId();
         for (Field field : fields) {
-            queryBegin = queryBegin + field.getName() + "= ? ";
+            queryBegin = queryBegin.append(field.getName() ).append("= ? ");
             if (count < fields.size()) {
-                queryBegin = queryBegin + ",";
+                queryBegin.append(",");
             }
             count++;
         }
         var idFields = metaData.getIdField();
-        queryEnd += idFields.getName() + "=?";
-        return queryBegin + queryEnd;
+        queryEnd.append(idFields.getName()).append("=?");
+        return queryBegin.append(queryEnd).toString();
     }
 }
