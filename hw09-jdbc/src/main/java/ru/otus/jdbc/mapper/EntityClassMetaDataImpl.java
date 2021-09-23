@@ -31,8 +31,6 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e.getMessage());
         }
-
-
     }
 
     @Override

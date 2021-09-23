@@ -39,13 +39,7 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                     }
                     return (T) entitySQLMetaData.getMetaData().getConstructor().newInstance(params);
                 }
-            } catch (SQLException e) {
-                throw new DataTemplateException(e);
-            } catch (InstantiationException e) {
-                throw new DataTemplateException(e);
-            } catch (IllegalAccessException e) {
-                throw new DataTemplateException(e);
-            } catch (InvocationTargetException e) {
+            } catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new DataTemplateException(e);
             }
             return null;
@@ -66,13 +60,7 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
                     clientList.add((T) entitySQLMetaData.getMetaData().getConstructor().newInstance(params));
                 }
                 return clientList;
-            } catch (SQLException e) {
-                throw new DataTemplateException(e);
-            } catch (InstantiationException e) {
-                throw new DataTemplateException(e);
-            } catch (IllegalAccessException e) {
-                throw new DataTemplateException(e);
-            } catch (InvocationTargetException e) {
+            } catch (SQLException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 throw new DataTemplateException(e);
             }
 
