@@ -51,8 +51,8 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
         return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectAllSql(), Collections.emptyList(), rs -> {
             var clientList = new ArrayList<T>();
             try {
+                int fieldsCount = entitySQLMetaData.getMetaData().getAllFields().size();
                 while (rs.next()) {
-                    int fieldsCount = entitySQLMetaData.getMetaData().getAllFields().size();
                     Object[] params = new Object[fieldsCount];
                     for (int i = 0; i < fieldsCount; i++) {
                         params[i] = rs.getObject(i + 1);
