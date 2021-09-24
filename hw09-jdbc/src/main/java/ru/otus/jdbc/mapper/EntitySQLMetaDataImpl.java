@@ -3,11 +3,11 @@ package ru.otus.jdbc.mapper;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
-    private final EntityClassMetaData metaData;
+public class EntitySQLMetaDataImpl<T> implements EntitySQLMetaData<T> {
+    private final EntityClassMetaData<T> metaData;
 
 
-    public EntitySQLMetaDataImpl(EntityClassMetaData metaData) {
+    public EntitySQLMetaDataImpl(EntityClassMetaData<T> metaData) {
         this.metaData = metaData;
     }
 
@@ -17,7 +17,7 @@ public class EntitySQLMetaDataImpl implements EntitySQLMetaData {
 
     }
 
-    public EntityClassMetaData getMetaData() {
+    public EntityClassMetaData<T> getMetaData() {
         return metaData;
     }
 

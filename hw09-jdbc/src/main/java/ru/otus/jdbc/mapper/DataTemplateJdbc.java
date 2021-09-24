@@ -32,10 +32,10 @@ public class DataTemplateJdbc<T> implements DataTemplate<T> {
         return dbExecutor.executeSelect(connection, entitySQLMetaData.getSelectByIdSql(), List.of(id), rs -> {
             try {
                 if (rs.next()) {
-                    int fieldsCount = entitySQLMetaData.getMetaData().getAllFields().size();
-                    Object[] params = new Object[fieldsCount];
-                    for (int i = 0; i < fieldsCount; i++) {
-                        params[i] = rs.getObject(i + 1);
+                    List<Field> fields = entitySQLMetaData.getMetaData().getAllFields();
+                    Object[] params = new Object[fields.size()];
+                    for (int i = 0; i < fields.size(); i++) {
+                        params[i] = rs.getObject(fields.get(i).getName());
                     }
                     return (T) entitySQLMetaData.getMetaData().getConstructor().newInstance(params);
                 }

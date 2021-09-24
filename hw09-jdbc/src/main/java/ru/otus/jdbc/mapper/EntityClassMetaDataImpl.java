@@ -9,10 +9,11 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     private final Constructor<T> constructor;
     private final String name;
     private Field id;
-    private final List<Field> allFields = new ArrayList<Field>();
-    private final List<Field> fieldsWithoutId = new ArrayList<Field>();
+    private final List<Field> allFields = new ArrayList<>();
+    private final List<Field> fieldsWithoutId = new ArrayList<>();
 
-    public EntityClassMetaDataImpl(Class clazz) {
+    public EntityClassMetaDataImpl(Class<T> clazz) {
+
         var fields = clazz.getDeclaredFields();
         var params = new Class[fields.length];
         this.name = clazz.getSimpleName();
@@ -47,7 +48,7 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     }
 
     @Override
-    public Constructor getConstructor() {
+    public Constructor<T> getConstructor() {
         return constructor;
     }
 
