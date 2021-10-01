@@ -2,6 +2,7 @@ package ru.otus.cachehw;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.crm.model.Client;
 
 
 public class HWCacheDemo {
@@ -21,6 +22,7 @@ public class HWCacheDemo {
                 logger.info("key:{}, value:{}, action: {}", key, value, action);
             }
         };
+
 
         cache.addListener(listener);
         cache.put("1", 1);

@@ -5,6 +5,7 @@ import org.flywaydb.core.api.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.cachehw.HwCache;
+import ru.otus.cachehw.HwListener;
 import ru.otus.cachehw.MyCache;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.repository.executor.DbExecutor;
@@ -55,6 +56,13 @@ public class HomeWork {
     private static void getClientWithCache() {
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
         HwCache<Long, Client> cache = new MyCache<>();
+        HwListener<Long, Client> listener = new HwListener<Long, Client>() {
+            @Override
+            public void notify(Long key, Client value, String action) {
+                log.info("key:{}, value:{}, action: {}", key, value, action);
+            }
+        };
+        cache.addListener(listener);
         var dbServiceClientWithCache = new DbServiceClientWithCacheImpl(dbServiceClient, cache);
         long start = new Date().getTime();
         for (Long i : listId) {
