@@ -15,6 +15,7 @@ import ru.otus.core.sessionmanager.TransactionRunnerJdbc;
 import ru.otus.crm.datasource.DriverManagerDataSource;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.model.Manager;
+import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.crm.service.DbServiceClientWithCacheImpl;
 import ru.otus.crm.service.DbServiceManagerImpl;
@@ -41,16 +42,17 @@ public class HomeWork {
     private static void getClientWithoutCache() {
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
         long start = new Date().getTime();
-        for (Long i : listId) {
-            var clientSecondSelected = dbServiceClient.getClient(i)
-                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
-        }
-        for (Long i : listId) {
-            var clientSecondSelected = dbServiceClient.getClient(i)
-                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
-        }
+        getClient(dbServiceClient);
+        getClient(dbServiceClient);
         long end = new Date().getTime();
         log.info("time without cache:{}", end - start);
+    }
+
+    private static void getClient(DBServiceClient dbServiceClient) {
+        for (Long i : listId) {
+            var clientSecondSelected = dbServiceClient.getClient(i)
+                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
+        }
     }
 
     private static void getClientWithCache() {
@@ -65,14 +67,8 @@ public class HomeWork {
         cache.addListener(listener);
         var dbServiceClientWithCache = new DbServiceClientWithCacheImpl(dbServiceClient, cache);
         long start = new Date().getTime();
-        for (Long i : listId) {
-            var clientSecondSelected = dbServiceClientWithCache.getClient(i)
-                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
-        }
-        for (Long i : listId) {
-            var clientSecondSelected = dbServiceClientWithCache.getClient(i)
-                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
-        }
+        getClient(dbServiceClientWithCache);
+        getClient(dbServiceClientWithCache);
         long end = new Date().getTime();
         log.info("time with cache:{}", end - start);
     }
