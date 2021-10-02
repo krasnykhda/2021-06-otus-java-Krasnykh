@@ -49,9 +49,9 @@ public class HomeWork {
     }
 
     private static void getClient(DBServiceClient dbServiceClient) {
-        for (Long i : listId) {
-            var clientSecondSelected = dbServiceClient.getClient(i)
-                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + i));
+        for (Long id : listId) {
+            var clientSecondSelected = dbServiceClient.getClient(id)
+                    .orElseThrow(() -> new RuntimeException("Client not found, id:" + id));
         }
     }
 
