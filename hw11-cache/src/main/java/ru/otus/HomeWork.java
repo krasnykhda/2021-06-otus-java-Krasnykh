@@ -37,7 +37,7 @@ public class HomeWork {
     private static EntityClassMetaData<Client> entityClassMetaDataClient;
     private static EntitySQLMetaData<Client> entitySQLMetaDataClient;
     private static DataTemplate dataTemplateClient;
-    private static List<Long> listId = new ArrayList<>();
+    private static List<String> listId = new ArrayList<>();
 
     private static void getClientWithoutCache() {
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
@@ -49,18 +49,18 @@ public class HomeWork {
     }
 
     private static void getClient(DBServiceClient dbServiceClient) {
-        for (Long id : listId) {
-            var clientSecondSelected = dbServiceClient.getClient(id)
+        for (String id : listId) {
+            var clientSecondSelected = dbServiceClient.getClient(Long.valueOf(id))
                     .orElseThrow(() -> new RuntimeException("Client not found, id:" + id));
         }
     }
 
     private static void getClientWithCache() {
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
-        HwCache<Long, Client> cache = new MyCache<>();
-        HwListener<Long, Client> listener = new HwListener<Long, Client>() {
+        HwCache<String, Client> cache = new MyCache<>();
+        HwListener<String, Client> listener = new HwListener<String, Client>() {
             @Override
-            public void notify(Long key, Client value, String action) {
+            public void notify(String key, Client value, String action) {
                 log.info("key:{}, value:{}, action: {}", key, value, action);
             }
         };
@@ -77,7 +77,7 @@ public class HomeWork {
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
         for (int i = 0; i <= count; i++) {
             var client = dbServiceClient.saveClient(new Client("Client" + i));
-            listId.add(client.getId());
+            listId.add(client.getId().toString());
         }
     }
 

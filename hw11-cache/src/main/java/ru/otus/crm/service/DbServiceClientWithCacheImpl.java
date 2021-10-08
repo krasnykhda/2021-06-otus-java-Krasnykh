@@ -24,10 +24,11 @@ public class DbServiceClientWithCacheImpl implements DBServiceClient {
 
     @Override
     public Optional<Client> getClient(long id) {
-        var value = hwCache.get(id);
+        Long id2=(Long)id;
+        var value = hwCache.get(id2.toString());
         if (value == null) {
             var client = dbServiceClient.getClient(id);
-            hwCache.put(id, client.get());
+            hwCache.put(id2.toString(), client.get());
             return client;
         } else {
             return Optional.of((Client) value);
