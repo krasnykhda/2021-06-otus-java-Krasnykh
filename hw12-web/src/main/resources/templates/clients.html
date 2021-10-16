@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<body>
+<h4>Создать клиента по имени</h4>
+<form method="post">
+    <label>Name:
+        <input type="text" name="name"><br />
+    </label>
+    <button type="submit">Submit</button>
+</form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <td style="width: 50px">Id</td>
+        <td style="width: 150px">Имя</td>
+    </tr>
+    </thead>
+    <#list clients as clients>
+    <tr>
+        <td>${clients.id}</td>
+        <td>${clients.name}</td>
+    </tr>
+</#list>
+</table>
+
+</body>
+</html>
