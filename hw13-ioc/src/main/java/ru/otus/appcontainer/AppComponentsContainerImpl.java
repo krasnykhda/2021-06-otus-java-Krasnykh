@@ -23,16 +23,34 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         var object = constructor.newInstance();
         List<Method> methodWithAnnotation = getMethodsWithAnnotation(configClass);
         for (Method method : methodWithAnnotation) {
-            List<Object> args = new ArrayList<>();
-            var parameters = method.getParameterTypes();
-            for (var parameter : parameters) {
-                args.add(appComponentsByName.get(parameter.getSimpleName()));
+            Object component = method.invoke(object, getArgs(method));
+            appComponentsByName.put(component.getClass().getSimpleName(), component);
+            appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), component);
+            if (method.getReturnType().isInterface()) {
+                addComponentByInterfaceOrThrowException(method.getReturnType().getSimpleName(), component);
+            } else {
+                for (Class<?> interfaceName : method.getReturnType().getInterfaces()) {
+                    addComponentByInterfaceOrThrowException(interfaceName.getSimpleName(), component);
+                }
             }
-            Object obj = args.size() > 0 ? method.invoke(object, args.toArray()) : method.invoke(object);
-            appComponentsByName.put(method.getReturnType().getSimpleName(), obj);
-            appComponentsByName.put(obj.getClass().getSimpleName(), obj);
-            appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), obj);
         }
+    }
+
+    private void addComponentByInterfaceOrThrowException(String typeName, Object component) throws Exception {
+        if (appComponents.indexOf(typeName) > -1) {
+            throw new Exception("В конфигурации найдено несколько реализаций одного интерфейса");
+        }
+        appComponents.add(typeName);
+        appComponentsByName.put(typeName, component);
+
+    }
+
+    private Object[] getArgs(Method method) {
+        var parameters = method.getParameterTypes();
+        return Arrays.stream(parameters).map(parameterType ->
+                        appComponentsByName.get(parameterType.getSimpleName()))
+                .toArray();
+
     }
 
     private List<Method> getMethodsWithAnnotation(Class<?> configClass) {
@@ -56,7 +74,8 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        return (C) appComponentsByName.get(componentClass.getSimpleName());
+        var component = appComponentsByName.get(componentClass.getSimpleName());
+        return (C) component;
     }
 
     @Override
