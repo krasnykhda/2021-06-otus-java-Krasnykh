@@ -74,8 +74,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        var component = appComponentsByName.get(componentClass.getSimpleName());
-        return (C) component;
+        return (C) appComponentsByName.get(componentClass.getSimpleName());
     }
 
     @Override
