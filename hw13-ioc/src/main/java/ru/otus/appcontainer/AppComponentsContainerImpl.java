@@ -43,7 +43,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         return Arrays.stream(parameters).map(parameterType ->
                         getAppComponent(parameterType))
                 .toArray();
-      }
+    }
 
     private List<Method> getMethodsWithAnnotation(Class<?> configClass) {
         List<Method> methodWithAnnotation = new ArrayList<>();
@@ -66,9 +66,9 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        for(Object appComponent:appComponents){
-            if(componentClass.isAssignableFrom(appComponent.getClass())){
-                return (C)appComponent;
+        for (Object appComponent : appComponents) {
+            if (componentClass.isAssignableFrom(appComponent.getClass())) {
+                return (C) appComponent;
             }
         }
         return null;

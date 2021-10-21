@@ -12,7 +12,7 @@ import java.util.Scanner;
 public class AppConfig {
 
     @AppComponent(order = 0, name = "equationPreparer")
-    public EquationPreparerImpl equationPreparer() {
+    public EquationPreparer equationPreparer() {
         return new EquationPreparerImpl();
     }
 
