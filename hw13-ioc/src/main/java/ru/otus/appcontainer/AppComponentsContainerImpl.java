@@ -24,34 +24,26 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         List<Method> methodWithAnnotation = getMethodsWithAnnotation(configClass);
         for (Method method : methodWithAnnotation) {
             Object component = method.invoke(object, getArgs(method));
-            appComponentsByName.put(component.getClass().getSimpleName(), component);
             appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), component);
-            if (method.getReturnType().isInterface()) {
-                addComponentByInterfaceOrThrowException(method.getReturnType().getSimpleName(), component);
-            } else {
-                for (Class<?> interfaceName : method.getReturnType().getInterfaces()) {
-                    addComponentByInterfaceOrThrowException(interfaceName.getSimpleName(), component);
-                }
-            }
+            addComponentOrThrowException(component);
         }
     }
 
-    private void addComponentByInterfaceOrThrowException(String typeName, Object component) throws Exception {
-        if (appComponents.indexOf(typeName) > -1) {
-            throw new Exception("В конфигурации найдено несколько реализаций одного интерфейса");
+    private void addComponentOrThrowException(Object component) throws Exception {
+        for (Object appComponent : appComponents) {
+            if (component.getClass().equals(appComponent.getClass())) {
+                throw new Exception("В конфигурации присутствуют компоненты одного типа");
+            }
         }
-        appComponents.add(typeName);
-        appComponentsByName.put(typeName, component);
-
+        appComponents.add(component);
     }
 
     private Object[] getArgs(Method method) {
         var parameters = method.getParameterTypes();
         return Arrays.stream(parameters).map(parameterType ->
-                        appComponentsByName.get(parameterType.getSimpleName()))
+                        getAppComponent(parameterType))
                 .toArray();
-
-    }
+      }
 
     private List<Method> getMethodsWithAnnotation(Class<?> configClass) {
         List<Method> methodWithAnnotation = new ArrayList<>();
@@ -74,7 +66,12 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(Class<C> componentClass) {
-        return (C) appComponentsByName.get(componentClass.getSimpleName());
+        for(Object appComponent:appComponents){
+            if(componentClass.isAssignableFrom(appComponent.getClass())){
+                return (C)appComponent;
+            }
+        }
+        return null;
     }
 
     @Override

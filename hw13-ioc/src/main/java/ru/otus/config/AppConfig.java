@@ -12,9 +12,10 @@ import java.util.Scanner;
 public class AppConfig {
 
     @AppComponent(order = 0, name = "equationPreparer")
-    public EquationPreparerImpl equationPreparer(){
+    public EquationPreparerImpl equationPreparer() {
         return new EquationPreparerImpl();
     }
+
     @AppComponent(order = 1, name = "playerService")
     public PlayerService playerService(IOService ioService) {
         return new PlayerServiceImpl(ioService);
@@ -26,12 +27,6 @@ public class AppConfig {
                                        EquationPreparer equationPreparer) {
         return new GameProcessorImpl(ioService, equationPreparer, playerService);
     }
-    /*@AppComponent(order = 2, name = "gameProcessor")
-    public GameProcessorImpl2 gameProcessor2(IOService ioService,
-                                       PlayerService playerService,
-                                       EquationPreparer equationPreparer) {
-        return new GameProcessorImpl2(ioService, equationPreparer, playerService);
-    }*/
 
     @AppComponent(order = 0, name = "ioService")
     public IOService ioService() {
