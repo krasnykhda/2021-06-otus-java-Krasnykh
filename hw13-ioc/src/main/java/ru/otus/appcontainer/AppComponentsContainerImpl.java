@@ -65,7 +65,6 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
             if (componentClass.isAssignableFrom(appComponent.getClass())) {
                 countComponent++;
                 indexComponent = appComponents.indexOf(appComponent);
-
             }
         }
         if (countComponent == 0 || countComponent > 1) {
