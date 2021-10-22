@@ -20,6 +20,10 @@ public class AppConfig {
     public PlayerService playerService(IOService ioService) {
         return new PlayerServiceImpl(ioService);
     }
+    /*@AppComponent(order = 1, name = "playerService2")
+    public PlayerService playerService2(IOService ioService) {
+        return new PlayerServiceImpl(ioService);
+    }*/
 
     @AppComponent(order = 2, name = "gameProcessor")
     public GameProcessor gameProcessor(IOService ioService,

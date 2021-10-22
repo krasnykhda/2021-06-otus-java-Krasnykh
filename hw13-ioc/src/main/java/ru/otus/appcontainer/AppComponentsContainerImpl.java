@@ -25,24 +25,17 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         for (Method method : methodWithAnnotation) {
             Object component = method.invoke(object, getArgs(method));
             appComponentsByName.put(method.getAnnotation(AppComponent.class).name(), component);
-            addComponentOrThrowException(component);
+            appComponents.add(component);
         }
     }
 
-    private void addComponentOrThrowException(Object component) throws Exception {
-        for (Object appComponent : appComponents) {
-            if (component.getClass().equals(appComponent.getClass())) {
-                throw new Exception("В конфигурации присутствуют компоненты одного типа");
-            }
-        }
-        appComponents.add(component);
-    }
-
-    private Object[] getArgs(Method method) {
+    private Object[] getArgs(Method method) throws Exception {
         var parameters = method.getParameterTypes();
-        return Arrays.stream(parameters).map(parameterType ->
-                        getAppComponent(parameterType))
-                .toArray();
+        Object[] args = new Object[parameters.length];
+        for (int i = 0; i < parameters.length; i++) {
+            args[i] = getAppComponent(parameters[i]);
+        }
+        return args;
     }
 
     private List<Method> getMethodsWithAnnotation(Class<?> configClass) {
@@ -65,13 +58,21 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     }
 
     @Override
-    public <C> C getAppComponent(Class<C> componentClass) {
+    public <C> C getAppComponent(Class<C> componentClass) throws Exception {
+        int countComponent = 0;
+        int indexComponent = 0;
         for (Object appComponent : appComponents) {
             if (componentClass.isAssignableFrom(appComponent.getClass())) {
-                return (C) appComponent;
+                countComponent++;
+                indexComponent = appComponents.indexOf(appComponent);
+
             }
         }
-        return null;
+        if (countComponent == 0 || countComponent > 1) {
+            String message = countComponent == 0 ? "Компонента не найдена" : "Найдено несколько компонентов одного класса";
+            throw new Exception(message);
+        }
+        return (C) appComponents.get(indexComponent);
     }
 
     @Override
