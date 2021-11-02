@@ -29,7 +29,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         }
     }
 
-    private Object[] getArgs(Method method) throws Exception {
+    private Object[] getArgs(Method method)  {
         var parameters = method.getParameterTypes();
         Object[] args = new Object[parameters.length];
         for (int i = 0; i < parameters.length; i++) {
@@ -58,7 +58,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
     }
 
     @Override
-    public <C> C getAppComponent(Class<C> componentClass) throws Exception {
+    public <C> C getAppComponent(Class<C> componentClass)  {
         int countComponent = 0;
         int indexComponent = 0;
         for (Object appComponent : appComponents) {
@@ -69,7 +69,7 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
         }
         if (countComponent == 0 || countComponent > 1) {
             String message = countComponent == 0 ? "Компонента не найдена" : "Найдено несколько компонентов одного класса";
-            throw new Exception(message);
+            throw new RuntimeException(message);
         }
         return (C) appComponents.get(indexComponent);
     }
