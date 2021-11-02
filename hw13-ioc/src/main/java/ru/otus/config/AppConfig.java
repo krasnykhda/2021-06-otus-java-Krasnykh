@@ -12,13 +12,18 @@ import java.util.Scanner;
 public class AppConfig {
 
     @AppComponent(order = 0, name = "equationPreparer")
-    public EquationPreparer equationPreparer(){
+    public EquationPreparer equationPreparer() {
         return new EquationPreparerImpl();
     }
+
     @AppComponent(order = 1, name = "playerService")
     public PlayerService playerService(IOService ioService) {
         return new PlayerServiceImpl(ioService);
     }
+    /*@AppComponent(order = 1, name = "playerService2")
+    public PlayerService playerService2(IOService ioService) {
+        return new PlayerServiceImpl(ioService);
+    }*/
 
     @AppComponent(order = 2, name = "gameProcessor")
     public GameProcessor gameProcessor(IOService ioService,
