@@ -5,8 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class DbServiceDemo {
+public class DbService {
     public static void main(String[] args) {
-     SpringApplication.run(DbServiceDemo.class, args);
+        SpringApplication.run(DbService.class, args);
     }
 }
