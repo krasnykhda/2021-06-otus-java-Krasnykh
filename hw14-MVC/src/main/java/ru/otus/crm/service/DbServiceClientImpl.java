@@ -33,17 +33,11 @@ public class DbServiceClientImpl implements DBServiceClient {
     }
 
     @Override
-    public Optional<Client> getClient(long id) {
-        var clientOptional = clientRepository.findById(id);
-        log.info("client: {}", clientOptional);
-        return clientOptional;
-    }
-
-    @Override
     public List<Client> findAll() {
-        var clientList = new ArrayList<Client>();
-        clientRepository.findAll().forEach(clientList::add);
-        log.info("clientList:{}", clientList);
-        return clientList;
+        return transactionManager.doInTransaction(() -> {
+            var clientList = clientRepository.findAll();
+            log.info("clientList:{}", clientList);
+            return clientList;
+        });
     }
 }
