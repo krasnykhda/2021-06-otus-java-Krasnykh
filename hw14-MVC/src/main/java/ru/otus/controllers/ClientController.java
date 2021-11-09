@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
+import ru.otus.crm.model.Adress;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.service.DBServiceClient;
@@ -33,12 +34,13 @@ public class ClientController {
     @GetMapping("/client/create")
     public String clientCreateView(Model model) {
         model.addAttribute("client", new Client());
+        model.addAttribute("adress", new Adress());
         return "clientCreate";
     }
 
     @PostMapping("/client/save")
-    public RedirectView clientSave(@ModelAttribute Client client) {
-        clientService.saveClient(client);
+    public RedirectView clientSave(@ModelAttribute Client client, @ModelAttribute Adress adress) {
+        clientService.saveClient(new Client(client.getName(), new Adress(adress.getStreet(), client.getId()), null));
         return new RedirectView("/", true);
     }
 

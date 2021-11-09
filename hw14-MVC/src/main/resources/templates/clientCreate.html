@@ -6,13 +6,29 @@
 
 </head>
 <body>
-<form id="create-form" th:action="@{/client/save}" th:object="${client}" th:method="post" accept-charset="utf-8">
+
+<!--<form id="create-form" th:action="@{/client/save}" th:object="${adress}" th:method="post" accept-charset="utf-8">
     <h1>New client:</h1>
     <div class="row">
         <label for="clientName">Name:</label>
-        <input id="clientName" name="name" type="text" th:value="${client.name}" value=""/>
+        <input id="clientName" name="street" type="text" th:value="${adress.street}" value=""/>
     </div>
 
+    <div class="row">
+        <button type="submit">Save with form</button>
+    </div>
+</form>-->
+
+<form th:action="@{/client/save}" method="post">
+    <h1>New client:</h1>
+    <div class="row">
+        <label for="clientName">Name:</label>
+        <input id="clientName" type="text" th:value="${client.name}" name="name"/>
+    </div>
+    <div class="row">
+        <label for="clientstreet">street:</label>
+        <input id="clientstreet" type="text" th:value="${adress.street}" name="street"/>
+    </div>
     <div class="row">
         <button type="submit">Save with form</button>
     </div>
