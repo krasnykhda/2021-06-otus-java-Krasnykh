@@ -26,8 +26,12 @@
         <input id="clientName" type="text" th:value="${client.name}" name="name"/>
     </div>
     <div class="row">
-        <label for="clientstreet">street:</label>
-        <input id="clientstreet" type="text" th:value="${adress.street}" name="street"/>
+        <label for="clientStreet">street:</label>
+        <input id="clientStreet" type="text" th:value="${adress.street}" name="street"/>
+    </div>
+    <div class="row">
+        <label for="clientPhoneNumber">phone number:</label>
+        <input id="clientPhoneNumber" type="text" th:value="${phone.number}" name="number"/>
     </div>
     <div class="row">
         <button type="submit">Save with form</button>

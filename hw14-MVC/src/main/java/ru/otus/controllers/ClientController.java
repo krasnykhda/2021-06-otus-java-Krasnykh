@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.otus.crm.model.Adress;
+import ru.otus.crm.model.Phone;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.service.DBServiceClient;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ClientController {
@@ -35,12 +38,13 @@ public class ClientController {
     public String clientCreateView(Model model) {
         model.addAttribute("client", new Client());
         model.addAttribute("adress", new Adress());
+        model.addAttribute("phone", new Phone());
         return "clientCreate";
     }
 
     @PostMapping("/client/save")
-    public RedirectView clientSave(@ModelAttribute Client client, @ModelAttribute Adress adress) {
-        clientService.saveClient(new Client(client.getName(), new Adress(adress.getStreet(), client.getId()), null));
+    public RedirectView clientSave(@ModelAttribute Client client, @ModelAttribute Adress adress, @ModelAttribute Phone phone) {
+        clientService.saveClient(new Client(client.getName(), new Adress(adress.getStreet(), client.getId()), Set.of(new Phone(phone.getNumber(), client.getId()))));
         return new RedirectView("/", true);
     }
 
