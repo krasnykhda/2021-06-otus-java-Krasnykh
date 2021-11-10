@@ -25,7 +25,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     @Override
     public Client saveClient(Client client) {
-        return transactionManager.doInReadOnlyTransaction(() -> {
+        return transactionManager.doInTransaction(() -> {
             var savedClient = clientRepository.save(client);
             log.info("saved client: {}", savedClient);
             return savedClient;
