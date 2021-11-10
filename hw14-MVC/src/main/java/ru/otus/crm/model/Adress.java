@@ -28,8 +28,18 @@ public class Adress {
         return clientId;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Adress(String street,Long clientId) {
+    public Adress() {
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public Adress(String street, Long clientId) {
         this(null,street,clientId);
     }
 
