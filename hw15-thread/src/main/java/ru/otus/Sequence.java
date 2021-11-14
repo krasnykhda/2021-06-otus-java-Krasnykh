@@ -24,7 +24,7 @@ public class Sequence {
                 while (nextThreadId != currentId) {
                     this.wait();
                 }
-                setNextValue();
+                setValue();
                 setNextThreadId();
                 logger.info(lastValue.toString());
                 sleep();
@@ -45,7 +45,7 @@ public class Sequence {
         }
     }
 
-    private void setNextValue() {
+    private void setValue() {
         if (nextThreadId == 1) {
             if (sequenceDirection.equals(Direction.INC)) {
                 lastValue++;
