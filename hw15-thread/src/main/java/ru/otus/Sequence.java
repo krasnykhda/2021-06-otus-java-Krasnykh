@@ -68,7 +68,7 @@ public class Sequence {
     }
 
     public static void main(String[] args) {
-        Sequence sequence = new Sequence(1, 20, 2);
+        Sequence sequence = new Sequence(1, 10, 2);
         sequence.start();
     }
 
