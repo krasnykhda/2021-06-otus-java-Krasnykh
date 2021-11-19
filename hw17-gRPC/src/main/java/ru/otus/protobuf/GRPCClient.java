@@ -16,7 +16,6 @@ public class GRPCClient {
     private static final int SERVER_PORT = 8190;
     private static long lastValueFromServer;
     private static long currentValue = 0;
-    private static boolean valueFromServerBeenAdded;
     private static final Object obj = new Object();
 
     public static void main(String[] args) throws InterruptedException {
@@ -36,7 +35,6 @@ public class GRPCClient {
                 System.out.println("Value from server: " + message.getCurrentValue());
                 synchronized (obj) {
                     lastValueFromServer = message.getCurrentValue();
-                    valueFromServerBeenAdded = false;
                 }
             }
 
@@ -52,14 +50,11 @@ public class GRPCClient {
             }
         });
         for (int i = 1; i <= 50; i++) {
-            if (!valueFromServerBeenAdded) {
-                synchronized (obj) {
-                    valueFromServerBeenAdded = true;
-                    currentValue = currentValue + lastValueFromServer + 1;
-                }
-            } else {
-                currentValue++;
+            synchronized (obj) {
+                currentValue = currentValue + lastValueFromServer + 1;
+                lastValueFromServer = 0;
             }
+
             System.out.println("Current value: " + currentValue);
             Thread.sleep(1000);
         }
