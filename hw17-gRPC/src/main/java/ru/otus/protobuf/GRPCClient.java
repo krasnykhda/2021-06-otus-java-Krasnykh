@@ -32,9 +32,9 @@ public class GRPCClient {
                 .setFirstValue(1).setLastValue(10).build(), new StreamObserver<ServerResponse>() {
             @Override
             public void onNext(ServerResponse message) {
-                System.out.println("Value from server: " + message.getCurrentValue());
                 synchronized (obj) {
                     lastValueFromServer = message.getCurrentValue();
+                    System.out.println("Value from server: " + message.getCurrentValue());
                 }
             }
 
