@@ -34,8 +34,8 @@ public class GRPCClient {
             @Override
             public void onNext(ServerResponse message) {
                 System.out.println("Value from server: " + message.getCurrentValue());
-                lastValueFromServer = message.getCurrentValue();
                 synchronized (obj) {
+                    lastValueFromServer = message.getCurrentValue();
                     valueFromServerBeenAdded = false;
                 }
             }
