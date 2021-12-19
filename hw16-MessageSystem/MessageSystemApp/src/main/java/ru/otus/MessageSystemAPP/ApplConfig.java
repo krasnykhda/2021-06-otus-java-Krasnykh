@@ -9,7 +9,7 @@ import ru.otus.*;
 import ru.otus.MessageSystemAPP.crm.service.DBServiceClient;
 import ru.otus.MessageSystemAPP.db.handlers.GetClientsHandler;
 import ru.otus.MessageSystemAPP.db.handlers.SaveClientHandler;
-import ru.otus.MessageSystemAPP.front.handlers.GetUserDataResponseHandler;
+import ru.otus.MessageSystemAPP.front.handlers.GetClientDataResponseHandler;
 import ru.otus.client.MsClient;
 import ru.otus.client.MsClientImpl;
 import ru.otus.message.MessageType;
@@ -39,7 +39,7 @@ public class ApplConfig {
 
     @Bean("frontClient")
     public MsClient frontMsClient(MessageSystem messageSystem, HandlersStore requestHandlerDatabaseStore) {
-        RequestHandler requestHandler = new GetUserDataResponseHandler();
+        RequestHandler requestHandler = new GetClientDataResponseHandler();
         requestHandlerDatabaseStore.addHandler(MessageType.ADD_CLIENT, requestHandler);
         requestHandlerDatabaseStore.addHandler(MessageType.GET_CLIENTS, requestHandler);
         MsClient msClient = new MsClientImpl("frontClient", messageSystem, requestHandlerDatabaseStore);
