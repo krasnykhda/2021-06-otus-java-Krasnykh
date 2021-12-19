@@ -15,6 +15,9 @@ include 'hw13-ioc'
 include 'hw14-MVC'
 include 'hw15-thread'
 include 'hw17-gRPC'
+include 'hw16-MessageSystem:MessageSystem'
+include 'hw16-MessageSystem:MessageSystemApp'
+include 'hw16-test'
 
 
 
