@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.otus.MessageSystemAPP.dto.ClientData;
-import ru.otus.MessageSystemAPP.dto.UserData;
 import ru.otus.MessageSystemAPP.crm.service.DBServiceClient;
 import ru.otus.RequestHandler;
 import ru.otus.client.ResultDataType;
